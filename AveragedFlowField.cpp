@@ -114,7 +114,7 @@ void AveragedFlowField::OutputVtk(std::string filename)
                 
                 for (int pt = 0; pt < 4; pt++)
                 {
-                    myfile << bboxCell[pt&1] << " " << bboxCell[2+((pt>>1)&1)] << " " << "0.0 " << std::endl;
+                    myfile << bboxCell[pt&1] << " " << bboxCell[2+((pt>>1)&1)] << " " << "0.0\n";
                 }
             }
         }
@@ -134,7 +134,7 @@ void AveragedFlowField::OutputVtk(std::string filename)
     myfile << "CELL_TYPES " << numBlocks*nx*ny << std::endl;
     for (size_t a = 0; a < numBlocks*nx*ny; a++)
     {
-    	myfile  << "8" << std::endl;
+    	myfile  << "8\n";
     }
     auto data = GetArray();
     myfile << "CELL_DATA " << numBlocks*nx*ny << std::endl;
@@ -149,8 +149,33 @@ void AveragedFlowField::OutputVtk(std::string filename)
             {
                 for (int i = 0; i < nx; i++)
                 {
-                    myfile << data(nvar, i, j, lb) << std::endl;
+                    myfile << data(nvar, i, j, lb) << "\n";
                 }
+            }
+        }
+    }
+    myfile.close();
+}
+
+void AveragedFlowField::OutputCsv(std::string filename)
+{
+    print("Output", filename);
+    int nx = this->numPoints[0];
+    int ny = this->numPoints[1];
+    std::ofstream myfile(filename.c_str());
+    auto data = GetArray();
+    for (size_t lb = 0; lb < numBlocks; lb++)
+    {
+        for (int j = 0; j < ny; j++)
+        {
+            for (int i = 0; i < nx; i++)
+            {
+                myfile << data(0, i, j, lb);
+                for (int nvar = 1; nvar < this->numVars; nvar++)
+                {
+                    myfile << "," << data(nvar, i, j, lb);
+                }
+                myfile << "\n";
             }
         }
     }

@@ -58,6 +58,7 @@ class AveragedFlowField
         MdArray<double, 2> GetBlockBoundingBoxes(void);
         MdArray<double, 2> GetBlockSpacing(void);
         void OutputVtk(std::string filename);
+        void OutputCsv(std::string filename);
     private:
         void Build(std::string avgFile, std::string avgSquareFile, std::string crossTermsFile);
         void ReadFile(MdArray<double, 4>& array, std::string file, std::vector<int>& srcIdx, std::vector<int>& destIdx);

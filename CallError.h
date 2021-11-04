@@ -2,7 +2,7 @@
 #define CALL_ERROR_H
 #include <iostream>
 
-#define CallError(mymsg) CallError_M(mymsg, __FILE__, __LINE__)
+#define CallError(mymsg) {CallError_M(mymsg, __FILE__, __LINE__);}
 
 static void CallError_M(std::string message, const char* file, int line)
 {
